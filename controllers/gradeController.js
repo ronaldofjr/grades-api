@@ -25,8 +25,8 @@ const findAll = async (req, res) => {
 	try {
 		const grades = await gradesModel.find(condition);
 		const showGrades = grades.map((grade) => {
-			const { name, subject, type, value, lastModified } = grade;
-			return { name, subject, type, value, lastModified };
+			const { _id, name, subject, type, value, lastModified } = grade;
+			return { id: _id, name, subject, type, value, lastModified };
 		});
 
 		res.send(showGrades);
@@ -44,8 +44,16 @@ const findOne = async (req, res) => {
 
 	try {
 		const grades = await gradesModel.findOne({ _id: id });
+		const returnData = {
+			id: grades._id,
+			name: grades.name,
+			subject: grades.subject,
+			type: grades.type,
+			value: grades.value,
+			lastModified: grades.lastModified,
+		};
 
-		res.send(grades);
+		res.send(returnData);
 
 		logger.info(`GET /grade - ${id}`);
 	} catch (error) {
